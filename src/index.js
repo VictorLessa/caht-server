@@ -28,7 +28,7 @@ async function testeServer() {
   });
 }
 
-const port = process.env.PORT || 8989;
+const port = process.env.PORT || 9898;
 
 const eventEmitter = new Events();
 const socketServer = new SocketServer(port);

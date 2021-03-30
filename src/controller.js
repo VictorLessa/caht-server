@@ -8,20 +8,23 @@ module.exports = class Controller {
     this.socketServer = socketServer;
   }
 
+  #pickCollor() {
+    return `#${(((1 << 24) * Math.random()) | 0).toString(16)}`;
+  }
+
   onNewConnection(socket) {
     const { id } = socket;
 
     console.log("Usuário connecatado: ", id);
     const userData = { id, socket };
     this.#updateGlobalUserData(id, userData);
-    console.log(this.#users);
     this.socketServer.sendMessage(socket, "details", id);
   }
 
   async joinRoom(socketId) {
     return async (data) => {
       const userData = data;
-      console.log(userData);
+      userData.color = this.#pickCollor();
       console.log(`${userData.userName} joined! ${[socketId]}`);
       const user = this.#updateGlobalUserData(socketId, userData);
 
@@ -36,19 +39,20 @@ module.exports = class Controller {
         })
       );
 
-      console.log(this);
-
       this.socketServer.sendMessage(
         user.socket,
         constants.event.UPDATE_USERS,
         currentUsers
       );
 
-      console.log("joinRoom");
       this.broadCast({
         socketId,
         roomId,
-        message: { id: socketId, userName: userData.userName },
+        message: {
+          id: socketId,
+          userName: userData.userName,
+          color: userData.color,
+        },
         event: constants.event.NEW_USER_CONNECTED,
       });
     };
@@ -72,11 +76,12 @@ module.exports = class Controller {
 
   message(socketId) {
     return (data) => {
-      const { userName, roomId } = this.#users.get(socketId);
+      const { userName, roomId, color } = this.#users.get(socketId);
+      console.log(userName, "mesagee");
       this.broadCast({
         socketId,
         roomId,
-        message: { userName, message: data, token: socketId },
+        message: { userName, message: data, token: socketId, color },
         event: constants.event.MESSAGE,
         includeCurrentSocket: true,
       });

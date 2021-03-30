@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "serve": "npx nodemon src/index.js",
     "start": "node src/index.js",
@@ -16,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "socket.io": "^4.0.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

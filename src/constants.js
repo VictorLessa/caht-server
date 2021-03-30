@@ -1,4 +1,4 @@
-export const constants = {
+module.exports = {
   event: {
     MESSAGE: "message",
     NEW_USER_CONNECTED: "newUserConnected",

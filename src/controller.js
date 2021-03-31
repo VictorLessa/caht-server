@@ -39,11 +39,11 @@ module.exports = class Controller {
         })
       );
 
-      this.socketServer.sendMessage(
-        user.socket,
-        constants.event.UPDATE_USERS,
-        currentUsers
-      );
+      // this.socketServer.sendMessage(
+      //   user.socket,
+      //   constants.event.UPDATE_USERS,
+      //   currentUsers
+      // );
 
       this.broadCast({
         socketId,
@@ -54,6 +54,7 @@ module.exports = class Controller {
           color: userData.color,
         },
         event: constants.event.NEW_USER_CONNECTED,
+        includeCurrentSocket: true,
       });
     };
   }
